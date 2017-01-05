@@ -108,6 +108,14 @@ void tests() {
 		RUNTIME_ASSERT(to_string(move) == to_string(test));
 	}
 	{
+		std::string one;
+		int two;
+		compressed_pair<std::string, int> t1{one};
+		compressed_pair<std::string, int> t2{two};
+		compressed_pair<std::string, int> t3{std::move(one)};
+		compressed_pair<std::string, int> t4{std::move(two)};
+	}
+	{
 		// crazy stuff
 		compressed_pair<non_empty_non_default_constructible, std::string> t1{42};
 		compressed_pair<empty_non_default_constructible, empty_type> t2{42};

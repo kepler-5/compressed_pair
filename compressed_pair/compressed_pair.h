@@ -74,16 +74,24 @@ public:
 	: first_member_type{(F&&)x}, second_member_type{(S&&)y} {}
 	
 	template<typename F = T1, typename S = T2>
-	explicit compressed_pair(T1&& x, std::enable_if_t<!std::is_same<std::remove_cv_t<F>, std::remove_cv_t<S>>::value, nat> = nat{})
-	: first_member_type{(T1&&)x} {}
+	explicit compressed_pair(F&& x, std::enable_if_t<
+							 !std::is_same<std::remove_cv_t<F>, std::remove_cv_t<S>>::value &&
+							 std::is_constructible<T1, F&&>::value &&
+							 !std::is_constructible<T2, F&&>::value, nat> = nat{})
+	: first_member_type{(F&&)x} {}
 	
 	template<typename F = T1, typename S = T2>
-	explicit compressed_pair(T2&& y, std::enable_if_t<!std::is_same<std::remove_cv_t<F>, std::remove_cv_t<S>>::value, const nat&> = nat{})
-	: second_member_type{(T2&&)y} {}
+	explicit compressed_pair(S&& y, std::enable_if_t<
+							 !std::is_same<std::remove_cv_t<F>, std::remove_cv_t<S>>::value &&
+							 !std::is_constructible<T1, S&&>::value &&
+							 std::is_constructible<T2, S&&>::value, const nat&> = nat{})
+	: second_member_type{(S&&)y} {}
 	
 	template<typename F = T1, typename S = T2>
-	explicit compressed_pair(T1&& x, std::enable_if_t<std::is_same<std::remove_cv_t<F>, std::remove_cv_t<S>>::value, nat> = nat{})
-	: first_member_type{(T1&&)x}, second_member_type{(T1&&)x} {}
+	explicit compressed_pair(F&& x, std::enable_if_t<
+							 std::is_same<std::remove_cv_t<F>, std::remove_cv_t<S>>::value &&
+							 std::is_constructible<T1, F&&>::value, nat> = nat{})
+	: first_member_type{(F&&)x}, second_member_type{(F&&)x} {}
 	
 	first_reference first() & { return first_member_type::get(); }
 	first_rvalue_reference first() && { return std::move(first_member_type::get()); }
