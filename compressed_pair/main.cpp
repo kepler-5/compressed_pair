@@ -115,7 +115,7 @@ void tests() {
 		compressed_pair<empty_final, int> t4;
 		compressed_pair<empty_final, non_empty_final> t5;
 		compressed_pair<int, std::unique_ptr<empty_non_default_constructible>> t6(std::make_unique<empty_non_default_constructible>(42));
-		
+		static_assert(!std::is_copy_constructible<compressed_pair<int, std::unique_ptr<empty_non_default_constructible>>>{}, "");
 		auto t7 = std::move(t6);
 	}
 }
