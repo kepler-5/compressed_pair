@@ -2,7 +2,6 @@
 #define compressed_pair_h
 
 #include <type_traits>
-#include <functional>
 
 namespace detail {
 	template<typename T>
@@ -91,7 +90,7 @@ public:
 	explicit compressed_pair(F&& x, std::enable_if_t<
 							 std::is_same<std::remove_cv_t<F>, std::remove_cv_t<S>>::value &&
 							 std::is_constructible<T1, F&&>::value, nat> = nat{})
-	: first_member_type{(F&&)x}, second_member_type{(F&&)x} {}
+	: first_member_type{x}, second_member_type{(F&&)x} {}
 	
 	first_reference first() & { return first_member_type::get(); }
 	first_rvalue_reference first() && { return std::move(first_member_type::get()); }

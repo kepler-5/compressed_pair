@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <vector>
 
 struct empty_type {};
 struct empty_type2 {};
@@ -125,6 +126,12 @@ void tests() {
 		compressed_pair<int, std::unique_ptr<empty_non_default_constructible>> t6(std::make_unique<empty_non_default_constructible>(42));
 		static_assert(!std::is_copy_constructible<compressed_pair<int, std::unique_ptr<empty_non_default_constructible>>>{}, "");
 		auto t7 = std::move(t6);
+	}
+	{
+		std::vector<int> vec{1,2,3,4,5};
+		compressed_pair<std::vector<int>, std::vector<int>> x{std::move(vec)};
+		RUNTIME_ASSERT(x.first().size() == 5);
+		RUNTIME_ASSERT(x.second().size() == 5);
 	}
 }
 
