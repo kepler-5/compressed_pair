@@ -47,7 +47,7 @@ std::string to_string(const compressed_pair<T, U>& pair) {
 	return stream.str();
 }
 
-#define RUNTIME_ASSERT(condition) do { if ( !(condition) ) throw; } while(false)
+#define RUNTIME_ASSERT(...) do { if ( !(__VA_ARGS__) ) throw; } while(false)
 
 void tests() {
 	// sanity checks
