@@ -133,6 +133,16 @@ void tests() {
 		RUNTIME_ASSERT(x.first().size() == 5);
 		RUNTIME_ASSERT(x.second().size() == 5);
 	}
+	{
+		compressed_pair<int, std::string> t1{0, "hi"}, t2{0, "hi"}, t3{1, "hi"};
+		RUNTIME_ASSERT(t1 == t2);
+		std::string s, t;
+		RUNTIME_ASSERT(t1 != t3);
+	}
+	{
+		compressed_pair<int, empty_type> t1{5}, t2{5};
+//		RUNTIME_ASSERT(t3 == t4);
+	}
 }
 
 int main(int argc, const char * argv[]) {
